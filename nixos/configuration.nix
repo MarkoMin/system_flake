@@ -2,7 +2,7 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ inputs, config, pkgs, pkgs-unstable, lib, ... }:
+{ inputs, config, pkgs, pkgs-unstable, pkgs-24, pkgs-25-05, pkgs-25-11, lib, ... }:
 
 {
   imports =
@@ -15,8 +15,12 @@
   smartcards.enable = false;
 
   # Bootloader.
-  boot.loader.systemd-boot.enable = true;
+  # boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
+  boot.loader.grub.efiSupport = true;
+  boot.loader.grub.device = "nodev";
+  boot.loader.grub.configurationLimit = 5;
+  boot.loader.grub.useOSProber=true;
 
   networking.hostName = "nixos"; # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
@@ -74,6 +78,10 @@
   # Enable sound with pipewire.
   sound.enable = true;
   hardware.pulseaudio.enable = false;
+
+  ## Na novijim verzijama zamijeniti sa hardware.graphics.enable=true;
+  hardware.opengl.enable = true;
+  hardware.opengl.driSupport = true;
   security.rtkit.enable = true;
   security.sudo = {
     enable = true;
@@ -101,7 +109,7 @@
     description = "Marko";
     extraGroups = [ "networkmanager" "wheel" "dialout" ];
     packages = with pkgs; [
-      firefox
+      pkgs-24.firefox
       thunderbird
       brave
       libreoffice
@@ -133,7 +141,7 @@
   environment.systemPackages = with pkgs; [
   #  vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
     home-manager
-    neovim
+    pkgs-25-05.neovim
     tmux
     wget
     git
@@ -143,9 +151,13 @@
 
     xclip
     tldr
+    docker
 
-    pkgs-unstable.erlang_27
-    pkgs-unstable.beam.packages.erlang_27.rebar3
+    pkgs-25-11.erlang_28
+    pkgs-25-11.beam.packages.erlang_28.rebar3
+    pkgs-unstable.signal-desktop
+    vips
+    file
     #beam.packages.erlangR26.erlang-ls
     erlang-ls
     lfe
@@ -155,7 +167,7 @@
     marksman
 
     feh
-    ngrok
+    pkgs-24.ngrok
 
     zig_0_11
     zls
@@ -163,13 +175,18 @@
     # Grisp
     picocom
 
-    # Rust
-    rustup
+    # Rust - za buildanje ELP-a
+    pkgs-unstable.cargo
+    pkgs-unstable.rustc
+    pkgs-unstable.rustup
     llvmPackages_9.llvm-polly
     
     # Dependency for telescope (vim plugin)
     ripgrep
-    nodejs
+    pkgs-25-05.nodejs
+
+    ## ascii tablica
+    ascii
 
     # nix lsp
     nixd
@@ -181,7 +198,7 @@
     pkgs-unstable.postman
 
     # for markdown preview
-    nodejs_21
+    #nodejs_21
     yarn
 
     # telnet
@@ -202,6 +219,9 @@
     
     # luakit
     luakit
+    # OpenSCAD
+    pkgs-24.openscad
+    pkgs-24.openscad-lsp
   ];
 
   environment.variables.EDITOR = "nvim";
@@ -267,7 +287,7 @@
   # services.openssh.enable = true;
 
   # Open ports in the firewall.
-  # networking.firewall.allowedTCPPorts = [ ... ];
+  networking.firewall.allowedTCPPorts = [ 5000 ];
   # networking.firewall.allowedUDPPorts = [ ... ];
   # Or disable the firewall altogether.
   # networking.firewall.enable = false;
