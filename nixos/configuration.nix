@@ -206,9 +206,6 @@
     inetutils
     dig
 
-    (import ./scripts/dummy.nix {pkgs=pkgs;})
-    (import ./scripts/app.nix {inherit pkgs;})
-
     _1password
 
     pkg-config
@@ -288,7 +285,7 @@
   # services.openssh.enable = true;
 
   # Open ports in the firewall.
-  networking.firewall.allowedTCPPorts = [ 5000 ];
+  # networking.firewall.allowedTCPPorts = [ 5000 ];
   # networking.firewall.allowedUDPPorts = [ ... ];
   # Or disable the firewall altogether.
   # networking.firewall.enable = false;
