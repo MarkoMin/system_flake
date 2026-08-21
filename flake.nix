@@ -6,6 +6,7 @@
     nixpkgs_24.url = "github:nixos/nixpkgs/nixos-24.11";
     nixpkgs_25_05.url = "github:nixos/nixpkgs/nixos-25.05";
     nixpkgs_25_11.url = "github:nixos/nixpkgs/nixos-25.11";
+    nixpkgs_26_05.url = "github:nixos/nixpkgs/nixos-26.05";
     unstable.url = "github:nixos/nixpkgs/nixos-unstable";
     home-manager = {
       url = "github:nix-community/home-manager";
@@ -46,6 +47,13 @@
         };
     };
 
+    pkgs-26-05 = import inputs.nixpkgs_26_05{
+        inherit system;
+        config = {
+            allowUnfree = true;
+        };
+    };
+
     pkgs-unstable = import inputs.unstable{
         inherit system;
         config = {
@@ -56,7 +64,7 @@
   {
     nixosConfigurations = {
         myNixos = nixpkgs.lib.nixosSystem {
-            specialArgs = { inherit inputs system pkgs-unstable pkgs-24 pkgs-25-05 pkgs-25-11; };
+            specialArgs = { inherit inputs system pkgs-unstable pkgs-24 pkgs-25-05 pkgs-25-11 pkgs-26-05; };
             modules = [
                 ./nixos/configuration.nix
             ];

@@ -115,9 +115,10 @@
     description = "Marko";
     extraGroups = [ "networkmanager" "wheel" "dialout" ];
     packages = with pkgs; [
-      pkgs-24.firefox
+      pkgs-25-05.firefox
+      unzip
       thunderbird
-      brave
+      pkgs-25-11.brave
       libreoffice
     ];
   };
@@ -159,8 +160,10 @@
     tldr
     docker
 
-    pkgs-25-11.erlang_28
-    pkgs-25-11.beam.packages.erlang_28.rebar3
+    pkgs-26-05.erlang_28
+    pkgs-26-05.beam.packages.erlang_28.rebar3
+    #pkgs-unstable.erlang_29
+    #pkgs-unstable.beam.packages.erlang_29.rebar3
     pkgs-unstable.signal-desktop
     vips
     file
@@ -182,14 +185,14 @@
     picocom
 
     # Rust - za buildanje ELP-a
-    pkgs-unstable.cargo
-    pkgs-unstable.rustc
-    pkgs-unstable.rustup
-    llvmPackages_9.llvm-polly
+    # pkgs-unstable.cargo
+    # pkgs-unstable.rustc
+    # pkgs-unstable.rustup
+    # llvmPackages_9.llvm-polly
     
     # Dependency for telescope (vim plugin)
     ripgrep
-    pkgs-25-05.nodejs
+    pkgs-25-11.nodejs
 
     ## ascii tablica
     ascii
@@ -201,7 +204,7 @@
     ccls
 
     libxml2
-    pkgs-unstable.postman
+    # pkgs-unstable.postman
 
     # for markdown preview
     #nodejs_21
@@ -244,6 +247,7 @@
 	    alias r3=rebar3
     	alias vim=nvim
 	    alias copy_tmux="tmux show-buffer | xclip -selection clipboard"
+        alias copy_commit_sha="git rev-parse --short=7 HEAD | xclip -selection clipboard"
     	export ERL_AFLAGS="-kernel shell_history enabled"
 
         export TERM='screen-256color'

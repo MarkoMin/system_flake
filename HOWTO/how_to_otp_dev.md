@@ -18,3 +18,7 @@ sudo make stdlib_test ARGS="-suite lists_SUITE"
 
 # Proper testovi
 sudo make stdlib_test ARGS="-suite calendar_prop_SUITE -pa <path_do_proper>/ebin"
+
+## BEAM cheat-sheat
+
+1. Tuplovi se koriste kao array u C-u. Korisne helper funkcije: `is_tuple/1`, `tuple_val/1` itd. Arity je prvi element liste. Pretvorba u konkretne tipove ide kroz `signed_val/1`, `unsigned_val/1` i slične helper funkcije.
