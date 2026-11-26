@@ -2,7 +2,14 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ inputs, config, pkgs, pkgs-unstable, pkgs-24, pkgs-25-05, pkgs-25-11, lib, ... }:
+{ inputs,
+    config,
+    pkgs,
+    pkgs-unstable,
+    pkgs-24,
+    pkgs-25-05, pkgs-25-11,
+    pkgs-26-05,
+    lib, ... }:
 
 {
   imports =
@@ -85,6 +92,19 @@
   sound.enable = true;
   hardware.pulseaudio.enable = false;
 
+  # Postgres
+  services.postgresql = {
+    enable = true;
+    package = pkgs-26-05.postgresql_18;
+
+    # Created automatically on every rebuild if missing:
+    ensureDatabases = [ "dummy_pg" ];
+    ensureUsers = [
+      { name = "dummy_pg"; ensureDBOwnership = true; }  # owns the DB of the same name
+    ];
+
+  };
+
   ## Na novijim verzijama zamijeniti sa hardware.graphics.enable=true;
   hardware.opengl.enable = true;
   hardware.opengl.driSupport = true;
@@ -165,6 +185,7 @@
     #pkgs-unstable.erlang_29
     #pkgs-unstable.beam.packages.erlang_29.rebar3
     pkgs-unstable.signal-desktop
+    pkgs-unstable.claude-code
     vips
     file
     #beam.packages.erlangR26.erlang-ls
@@ -244,6 +265,11 @@
 
   programs.bash = {
     interactiveShellInit = ''
+        checkout() {
+            mkdir -p _checkouts/
+            ln -s /home/mmin/invariant/$1 _checkouts
+        }
+
 	    alias r3=rebar3
     	alias vim=nvim
 	    alias copy_tmux="tmux show-buffer | xclip -selection clipboard"

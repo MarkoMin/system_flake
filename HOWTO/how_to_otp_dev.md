@@ -1,6 +1,7 @@
 nix develop nixpkgs#erlang_28
 export ERL_TOP=`pwd`
 export MAKEFLAGS=-j${N} (npr. -j8 za 8 hyperthreadova)
+export ERLC_USE_SERVER=true (korisi se compile server - brzi build)
 sudo make clean
 
 sudo ./otp_build configure --without-termcap --enable-builtin-zlib $configureFlags (bez systemd, hipe i wx)
@@ -10,7 +11,7 @@ ili bez ssla
 sudo ./otp_build configure --enable-threads --enable-kernel-poll --without-termcap --enable-builtin-zlib
 
 
-sudo make
+sudo make ili ./otp_build boot -t (TINY build)
 ...
 
 # Testiraj neki specifični suite
